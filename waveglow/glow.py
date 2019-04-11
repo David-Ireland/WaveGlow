@@ -130,10 +130,13 @@ class WN(torch.nn.Module):
         end.bias.data.zero_()
         self.end = end
 
+        kernal_range = [5,5,4,4,3,3,3,3,2,2]
+        # kernal_range = [3,3,3,3,3,3,3,3,3,3]
+
         for i in range(n_layers):
             dilation = 2 ** i
-            padding = int((kernel_size*dilation - dilation)/2)
-            in_layer = torch.nn.Conv1d(n_channels, 2*n_channels, kernel_size,
+            padding = int((kernal_range[i]*dilation - dilation)/2)
+            in_layer = torch.nn.Conv1d(n_channels, 2*n_channels, kernal_range[i],
                                        dilation=dilation, padding=padding)
             in_layer = torch.nn.utils.weight_norm(in_layer, name='weight')
             self.in_layers.append(in_layer)
