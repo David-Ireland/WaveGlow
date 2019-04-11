@@ -5,9 +5,9 @@
         "learning_rate": 1e-4,
         "sigma": 1.0,
         "iters_per_checkpoint": 2000,
-        "batch_size": 1,
+        "batch_size": 3,
         "seed": 1234,
-        "checkpoint_path": "checkpoints/waveglow_194000"
+        "checkpoint_path": ""
     },
     "data_config": {
         "training_files":"train_files.txt",
@@ -31,8 +31,8 @@
         "n_early_every": 4,
         "n_early_size": 2,
         "WN_config": {
-            "n_layers": 10,
-            "n_channels": 256,
+            "n_layers": 8,
+            "n_channels": 512,
             "kernel_size": 3
         }
     }

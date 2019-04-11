@@ -30,7 +30,7 @@ import os
 import torch
 
 #=====START: ADDED FOR DISTRIBUTED======
-from distributed import apply_gradient_allreduce
+from distributed import init_distributed, apply_gradient_allreduce, reduce_tensor
 from torch.utils.data.distributed import DistributedSampler
 #=====END:   ADDED FOR DISTRIBUTED======
 
@@ -65,8 +65,7 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
     torch.cuda.manual_seed(seed)
     #=====START: ADDED FOR DISTRIBUTED======
     if num_gpus > 1:
-        pass
-        # init_distributed(rank, num_gpus, group_name, **dist_config)
+        init_distributed(rank, num_gpus, group_name, **dist_config)
     #=====END:   ADDED FOR DISTRIBUTED======
 
     criterion = WaveGlowLoss(sigma)
@@ -95,7 +94,6 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
                               batch_size=batch_size,
                               pin_memory=False,
                               drop_last=True)
-    print(train_loader)
 
     # Get shared output_directory ready
     if rank == 0:
@@ -119,8 +117,7 @@ def train(num_gpus, rank, group_name, output_directory, epochs, learning_rate,
 
             loss = criterion(outputs)
             if num_gpus > 1:
-                pass
-                # reduced_loss = reduce_tensor(loss.data, num_gpus).item()
+                reduced_loss = reduce_tensor(loss.data, num_gpus).item()
             else:
                 reduced_loss = loss.item()
             loss.backward()
