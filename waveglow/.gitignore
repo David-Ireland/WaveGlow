@@ -1,7 +1,0 @@
-checkpoints
-plain_checkpoints
-*.pt
-LJSpeech-1.1
-data
-waveglow_20000
-inference.ipynb
